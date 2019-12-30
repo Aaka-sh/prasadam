@@ -2,16 +2,23 @@
 
 function processForm(e) {
   var dataJSON = {
-    userName: $("#email").val(),
-    password: $("#pwd").val()
+    email: $("#email").val(),
+    password: $("#password").val()
   };
   $.ajax({
     url: BACKEND + VERIFYADMIN,
     dataType: "text",
     type: "post",
-    contentType: "application/json",
+    contentType: "application/x-www-form-urlencoded",
     data: $(this).serialize(),
-    success: function(data, textStatus, jQxhr) {},
+    success: function(data, textStatus, jQxhr) {
+      if(jQxhr.status === 200){
+        // Admin is valid.
+        // Redirect to home.html.
+
+        window.location = "home.html";
+      }
+    },
     error: function(jqXhr, textStatus, errorThrown) {
       console.log(errorThrown);
     }
