@@ -1,0 +1,63 @@
+<?php
+require_once("dbcontroller.php");
+/* 
+A domain Class to demonstrate RESTful web services
+*/
+Class Prasadam {
+	private $prasad = array();
+	/*
+		you should hookup the DAO here
+	*/
+	public function getAllPrasadam(){
+		$query = "SELECT * FROM tbl_prasadam";
+		$dbcontroller = new DBController();
+		$this->prasad = $dbcontroller->executeSelectQuery($query);
+		return $this->prasad;
+	}	
+
+	public function getPrasamCount($data){
+		$dateValue = $data->prasaddate;
+		$prasadmValue = $data->chooseprasad;
+		$query = "SELECT COUNT(*) FROM `tbl_prasadam` WHERE `prasaddate` ='$dateValue' AND (`chooseprasad` LIKE '%$prasadmValue%')";
+		$dbcontroller = new DBController();
+		$this->prasad = $dbcontroller->executeSelectQuery($query);
+		return $this->prasad;
+	}
+
+	public function addPrasadam($data){
+		$userName = $data->username;
+		$chooseprasad = $data->chooseprasad[1] . $data->chooseprasad[0] . $data->chooseprasad[2];			
+		$prasaddate = $data->prasaddate;
+		$query = "INSERT INTO tbl_prasadam(username,chooseprasad,prasaddate) VALUES ('$userName','$chooseprasad','$prasaddate')";
+		$dbcontroller = new DBController();
+		$sucessValue = $dbcontroller->executeInsertQuery($query);
+		return $sucessValue;
+	}
+
+	public function addUser($data){
+		$userName = $data->userName;
+		$query = "INSERT INTO users(username) VALUES ('$userName')";
+		$dbcontroller = new DBController();
+		$sucessValue = $dbcontroller->executeInsertQuery($query);
+		return $sucessValue;
+	}
+
+	public function verifyAdmin($data){
+		$email = $data->email;
+		$password = $data->password;
+
+		$extractionQuery = "SELECT * FROM admins WHERE email = '".$email."'";
+		$dbcontroller = new DBController();
+		$admins = $dbcontroller->executeSelectQuery($extractionQuery);
+
+		if(!$admins || sizeof($admins) > 1)
+			return null;
+
+		$hashedPassword = $admins[0]["password"];
+
+		if(password_verify($password, $hashedPassword))
+			return true;
+		else return false;
+	}
+}
+?>

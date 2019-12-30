@@ -1,0 +1,11 @@
+# Turn rewrite engine on
+Options +FollowSymlinks
+RewriteEngine on
+
+# map neat URL to internal URL
+RewriteRule ^list/$   RestController.php?view=all [nc,qsa]
+RewriteRule ^add/$    RestController.php?view=add [nc,qsa]
+RewriteRule ^count/$    RestController.php?view=count [nc,qsa]
+RewriteRule ^adduser/$    RestController.php?view=adduser [nc,qsa]
+RewriteRule ^verifyadmin/$ RestController.php?view=verifyadmin [nc,qsa]
+RewriteRule ^isloggedin/$ RestController.php?view=isloggedin [nc,qsa]
