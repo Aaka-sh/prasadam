@@ -65,6 +65,15 @@ switch($view){
 		$prasadmRestHandler = new PrasadamRestHandler();
 		$prasadmRestHandler->isLoggedIn();
 		break;
+	case "logout":
+		$_SESSION['isloggedin'] = false;
+		$resOb = new stdClass();
+		if(session_destroy()){
+			$resOb->message = "Successfully logged out!";
+		}
+		else $resOb->message = "Some problem occurred!";
+		echo json_encode($resOb);
+		break;
 	case "" :
 		//404 - not found;
 		break;

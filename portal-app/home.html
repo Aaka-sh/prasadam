@@ -2,49 +2,45 @@
 <link rel="stylesheet" type="text/css" href="./fullcalendar.css" />
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="./moment.min.js"></script>
-<script src="./fullcalendar.js"></script>
-<script src="./js/constants.js"></script>
-<script src="./js/prasadam.js"></script>
+<script src="./fullcalendar.js" defer></script>
+<script src="./js/constants.js" defer></script>
+<script src="./js/prasadam.js" defer></script>
+<script src="./js/homeauth.js" defer></script>
 <b>Hare Krishna Welcome to admin portal</b>
-<i><a href="login.html">Logout</a></i>
+<i><a href="login.html" id="logoutlink">Logout</a></i>
 <fieldset align="center">
+  <legend align="center">Prasadam Count</legend>
 
-<legend align="center">Prasadam Count</legend>
+  Select Date :<input type="Date" name="date" id="selectedDate" /><br /><br />
 
-Select Date :<input type="Date" name="date" id="selectedDate"><br><br>	
+  <input type="button" value="View Count" id="view" class="button" />
 
-<input type="button" value="View Count" id="view" class="button">
+  <h3 align="center"><b>Prasadam Count:</b></h3>
 
-<h3 align="center"><b>Prasadam Count:</b></h3>
-
-<table id="prasadcount" bgcolor="pink" align="center" border="2">
-  <tr>
-    <th>Breakfast</th>
-    <th>Lunch</th>
-     <th>Dinner</th>
-     <th>Total Count</th>
-  </tr>
-  <tr>
-    <td id="breakfast"></td>
-    <td id="lunch"></td>
-    <td id="dinner"></td>
-    <td id="total"></td>
-  </tr>
-  
-</table>
-
+  <table id="prasadcount" bgcolor="pink" align="center" border="2">
+    <tr>
+      <th>Breakfast</th>
+      <th>Lunch</th>
+      <th>Dinner</th>
+      <th>Total Count</th>
+    </tr>
+    <tr>
+      <td id="breakfast"></td>
+      <td id="lunch"></td>
+      <td id="dinner"></td>
+      <td id="total"></td>
+    </tr>
+  </table>
 </fieldset>
 
-
 <fieldset align="center">
-<legend>Add New Devotee?</legend>
+  <legend>Add New Devotee?</legend>
 
-<form id="my-form">
-Enter Your Mail-Id:
+  <form id="my-form">
+    Enter Your Mail-Id:
 
-<input id="username" type="email" name="username"><br><br>
-<input type="button" id="reg_btn" value="Add Devotee" class="button">
-</form>
-<div id='calendar'></div>
+    <input id="username" type="email" name="username" /><br /><br />
+    <input type="button" id="reg_btn" value="Add Devotee" class="button" />
+  </form>
+  <div id="calendar"></div>
 </fieldset>
-
