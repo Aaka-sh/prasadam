@@ -6,5 +6,5 @@
         echo "<br>Password : ".$hashedPass;
     }
 
-    var_dump(json_decode("{\"email\": \"abc\", \"password\": \"abcdefgh\"}"));
+    echo generateAdmin("akash@gmail.com", "12345678");
 ?>

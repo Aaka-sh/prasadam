@@ -4,6 +4,7 @@
     <title>Prasadam Admin Portal</title>
     <link rel="stylesheet" type="text/css" href="./css/prasadam.css" />
     <link rel="stylesheet" type="text/css" href="./fullcalendar.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="./moment.min.js"></script>
     <script src="./fullcalendar.js" defer></script>
@@ -17,11 +18,7 @@
     <fieldset align="center">
       <legend align="center">Prasadam Count</legend>
 
-      Select Date :<input
-        type="Date"
-        name="date"
-        id="selectedDate"
-      /><br /><br />
+      Select Date :<input type="Date" name="date" id="selectedDate"/><br /><br />
 
       <input type="button" value="View Count" id="view" class="button" />
 
@@ -45,12 +42,12 @@
 
     <fieldset align="center">
       <legend>Add New Devotee?</legend>
-
-      <form id="my-form">
+      <form id="adderform">
         Enter Your Mail-Id:
 
-        <input id="username" type="email" name="username" /><br /><br />
+        <input id="username" type="email" name="userName" class="form-control" placeholder="Email Address for user" required /><br /><br />
         <input type="button" id="reg_btn" value="Add Devotee" class="button" />
+        <div id="alerter"></div>
       </form>
       <div id="calendar"></div>
     </fieldset>

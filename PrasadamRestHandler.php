@@ -1,7 +1,9 @@
 <?php
 require_once("SimpleRest.php");
 require_once("Prasadam.php");
-		
+require_once("errors.php");
+require_once("constants.php");
+
 class PrasadamRestHandler extends SimpleRest {
 
 	function getPrasamCount($data){
@@ -72,21 +74,36 @@ class PrasadamRestHandler extends SimpleRest {
 	}
 	
 	public function addUser($data){
-		$prasad = new Prasadam();
-		$sucessValue = $prasad->addUser($data);
+		$result = new stdClass();
 
-		if(empty($sucessValue)) {
-			$statusCode = 404;
-			$sucessValue = array('error' => 'Data Not Added !');		
-		} else {
-			$statusCode = 200;
+		if(!$data || !$data->userName){
+			$statusCode = 400;
+			$result->error = INCOMPLETEDATA;
+		}
+		else{
+			$prasad = new Prasadam();
+			$responseValue = $prasad->addUser($data);
+			
+			if($responseValue === -1){
+				// User already exists.
+				$statusCode = 400;
+				$result->error=USER_EXISTS;
+			}
+			else{
+				if(empty($responseValue)) {
+					$statusCode = 404;
+					$result->error = SOMEERROR;		
+				}
+				else {
+					$statusCode = 200;
+					$result->message = ADDEDUSER;
+				}
+			}
 		}
 
 		$requestContentType = 'application/json';//$_POST['HTTP_ACCEPT'];
 		$this ->setHttpHeaders($requestContentType, $statusCode);
-		
-		$result["output"] = $sucessValue;
-				
+	
 		if(strpos($requestContentType,'application/json') !== false){
 			$response = $this->encodeJson($result);
 			echo $response;
@@ -106,13 +123,13 @@ class PrasadamRestHandler extends SimpleRest {
 		if($isValid){
 			$statusCode = 200;
 
-			$_SESSION['isloggedin'] = true;
+			$_SESSION[ADMINSESSNAME] = true;
 		}
 		else{
 			$successValue  = "Admin invalid!";
 			$statusCode = 400;
 
-			$_SESSION['isloggedin'] = false;
+			$_SESSION[ADMINSESSNAME] = false;
 		}
 
 		$requestContentType = 'application/json';//$_POST['HTTP_ACCEPT'];
@@ -125,10 +142,22 @@ class PrasadamRestHandler extends SimpleRest {
 		echo $response;
 	}
 
-	public function isLoggedIn(){
+	public function isAdminLoggedIn(){
 		$resObject = new stdClass();
 
-		if($_SESSION['isloggedin'])
+		if($_SESSION[ADMINSESSNAME])
+			$resObject->isLoggedIn = true;
+		else $resObject->isLoggedIn = false;
+
+		$resObject = json_encode($resObject);
+
+		echo $resObject;
+	}
+
+	public function isUserLoggedIn(){
+		$resObject = new stdClass();
+
+		if($_SESSION[USERSESSNAME])
 			$resObject->isLoggedIn = true;
 		else $resObject->isLoggedIn = false;
 

@@ -41,10 +41,12 @@ switch($view){
 
   	case "adduser":
 		// to handle REST Url prasadam/addUser/
-		$json = file_get_contents('php://input');
+		$userName = $_POST['userName'];
+		$data = new stdClass();
+		$data->userName = $userName;
+		// Add any other fields here...
 
 		// Converts it into a PHP object
-		$data = json_decode($json);
 		$prasadmRestHandler = new PrasadamRestHandler();
 		$prasadmRestHandler->addUser($data);
 		break;
@@ -61,11 +63,15 @@ switch($view){
 		$prasadmRestHandler = new PrasadamRestHandler();
 		$prasadmRestHandler->verifyAdmin($data);
 		break;
-	case "isloggedin":
+	case "isadminloggedin":
 		$prasadmRestHandler = new PrasadamRestHandler();
-		$prasadmRestHandler->isLoggedIn();
+		$prasadmRestHandler->isAdminLoggedIn();
 		break;
-	case "logout":
+	case "isuserloggedin":
+		$prasadmRestHandler = new PrasadamRestHandler();
+		$prasadmRestHandler->isUserLoggedIn();
+	break;
+	case "logoutadmin":
 		$_SESSION['isloggedin'] = false;
 		$resOb = new stdClass();
 		if(session_destroy()){

@@ -32,23 +32,34 @@ $(document).ready(function() {
     });
   });
 
-  $("#reg_btn").click(function(e) {
+  $("#adderform").on("submit", function(e) {
     e.preventDefault();
-    var dataJSON = {
-      userName: $("#username").val()
-    };
     $.ajax({
       url: BACKEND + "adduser/",
-      dataType: "text",
-      type: "post",
-      contentType: "application/json",
-      data: JSON.stringify(dataJSON),
-      success: function(data, textStatus, jQxhr) {
-        alert("Devotie added hari bol ...");
-        window.location.href = "home.html";
+      dataType: "JSON",
+      type: "POST",
+      contentType: "application/x-www-form-urlencoded",
+      data: $("#adderform").serialize(),
+      success: function(data) {
+        $("#alerter").text(data.message);
+        $("#alerter").removeClass("alert alert-danger");
+        $("#alerter").addClass("alert alert-success");
+
+        setInterval(() => {
+          $("#alerter").text("");
+          $("#alerter").removeClass("alert alert-success");
+        }, 2000);
       },
-      error: function(jqXhr, textStatus, errorThrown) {
-        console.log(errorThrown);
+      error: function(jqXhr) {
+        let error = jqXhr.responseJSON.error;
+        $("#alerter").text(error);
+        $("#alerter").removeClass("alert alert-success");
+        $("#alerter").addClass("alert alert-danger");
+        
+        setInterval(() => {
+          $("#alerter").text("");
+          $("#alerter").removeClass("alert alert-danger");
+        }, 2000);
       }
     });
   });

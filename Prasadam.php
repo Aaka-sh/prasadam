@@ -1,5 +1,7 @@
 <?php
 require_once("dbcontroller.php");
+require_once("errors.php");
+require_once("constants.php");
 /* 
 A domain Class to demonstrate RESTful web services
 */
@@ -36,8 +38,18 @@ Class Prasadam {
 
 	public function addUser($data){
 		$userName = $data->userName;
-		$query = "INSERT INTO users(username) VALUES ('$userName')";
 		$dbcontroller = new DBController();
+
+		// Validation.
+		$validationQuery = "SELECT * FROM users WHERE username = '$userName'";
+		$validationResults = $dbcontroller->executeSelectQuery($validationQuery);
+
+		if(sizeof($validationResults) > 0){
+			// User already exists with the given username.
+			return -1;
+		}
+
+		$query = "INSERT INTO users(username) VALUES ('$userName')";
 		$sucessValue = $dbcontroller->executeInsertQuery($query);
 		return $sucessValue;
 	}

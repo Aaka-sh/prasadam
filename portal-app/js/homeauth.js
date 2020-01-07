@@ -21,7 +21,7 @@ function logout(event) {
   event.preventDefault();
 
   $.ajax({
-    url: BACKEND + LOGOUT,
+    url: BACKEND + LOGOUTADMIN,
     success: function(data, textStatus, jQxhr) {
       let resData = JSON.parse(data);
       if (jQxhr.status === 200 && resData.message === LOGOUTMESSAGE) {
@@ -35,4 +35,4 @@ function logout(event) {
   });
 }
 
-$("#logoutlink").on("click", logout);
+$("#logoutlink").click(logout);

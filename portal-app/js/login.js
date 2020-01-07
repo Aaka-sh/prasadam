@@ -1,10 +1,6 @@
 // File concerned with the logging in of Administrators into the dashboards.
 
 function processForm(e) {
-  var dataJSON = {
-    email: $("#email").val(),
-    password: $("#password").val()
-  };
   $.ajax({
     url: BACKEND + VERIFYADMIN,
     dataType: "text",
