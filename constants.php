@@ -6,4 +6,9 @@
     const ADDEDUSER = "Successfully added user!";
     const ADMINSESSNAME = "adminloggedin";
     const USERSESSNAME = "userloggedin";
+    const ADMINVALID = "Admin Valid";
+    const ADMININVALID = "Admin Invalid";
+    const USERVALID = "User Valid";
+    const USERINVALID = "User Invalid";
+    const LOGOUTMESSAGE = "Successfully logged out!";
 ?>

@@ -1,7 +1,8 @@
 <?php
 session_start();
-require_once("PrasadamRestHandler.php");
-error_reporting(0);		
+error_reporting(0);
+require_once("constants.php");
+require_once("PrasadamRestHandler.php");	
 $view = "";
 
 if(isset($_GET["view"]))
@@ -63,6 +64,14 @@ switch($view){
 		$prasadmRestHandler = new PrasadamRestHandler();
 		$prasadmRestHandler->verifyAdmin($data);
 		break;
+	case "loginuser":
+		$userName = $_POST['userName'];
+		$data = new stdClass();
+		$data->userName = $userName;
+
+		$prasadmRestHandler = new PrasadamRestHandler();
+		$prasadmRestHandler->verifyUser($data);
+		break;		
 	case "isadminloggedin":
 		$prasadmRestHandler = new PrasadamRestHandler();
 		$prasadmRestHandler->isAdminLoggedIn();
@@ -72,12 +81,21 @@ switch($view){
 		$prasadmRestHandler->isUserLoggedIn();
 	break;
 	case "logoutadmin":
-		$_SESSION['isloggedin'] = false;
+		$_SESSION[ADMINSESSNAME] = false;
 		$resOb = new stdClass();
 		if(session_destroy()){
-			$resOb->message = "Successfully logged out!";
+			$resOb->message = LOGOUTMESSAGE;
 		}
-		else $resOb->message = "Some problem occurred!";
+		else $resOb->message = SOMEERROR;
+		echo json_encode($resOb);
+		break;
+	case "logoutuser":
+		$_SESSION[USERSESSNAME] = false;
+		$resOb = new stdClass();
+		if(session_destroy()){
+			$resOb->message = LOGOUTMESSAGE;
+		}
+		else $resOb->message = SOMEERROR;
 		echo json_encode($resOb);
 		break;
 	case "" :

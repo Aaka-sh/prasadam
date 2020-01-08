@@ -118,7 +118,7 @@ class PrasadamRestHandler extends SimpleRest {
 	public function verifyAdmin($data){
 		$prasad = new Prasadam();
 		$isValid = $prasad->verifyAdmin($data);
-		$successValue  = "Admin Valid!";
+		$successValue  = ADMINVALID;
 
 		if($isValid){
 			$statusCode = 200;
@@ -126,7 +126,7 @@ class PrasadamRestHandler extends SimpleRest {
 			$_SESSION[ADMINSESSNAME] = true;
 		}
 		else{
-			$successValue  = "Admin invalid!";
+			$successValue  = ADMININVALID;
 			$statusCode = 400;
 
 			$_SESSION[ADMINSESSNAME] = false;
@@ -137,6 +137,30 @@ class PrasadamRestHandler extends SimpleRest {
 		
 		$result = new stdClass();
 		$result->output = $successValue;
+
+		$response = $this->encodeJson($result);
+		echo $response;
+	}
+
+	public function verifyUser($data){
+		$prasad = new Prasadam();
+		$isValid = $prasad->verifyUser($data);
+		$successValue  = USERVALID;
+
+		$result = new stdClass();
+		if($isValid){
+			$statusCode = 200;
+			$_SESSION[USERSESSNAME] = true;
+			$result->output = $successValue;
+		}
+		else{
+			$statusCode = 400;
+			$_SESSION[USERSESSNAME] = false;
+			$result->error = USERINVALID;
+		}
+
+		$requestContentType = 'application/json';//$_POST['HTTP_ACCEPT'];
+		$this->setHttpHeaders($requestContentType, $statusCode);
 
 		$response = $this->encodeJson($result);
 		echo $response;

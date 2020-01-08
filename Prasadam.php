@@ -55,6 +55,11 @@ Class Prasadam {
 	}
 
 	public function verifyAdmin($data){
+		if(!$data || !$data->email || !$data->password){
+			// If the user hasn't sent any valid info.
+			return null;
+		}
+
 		$email = $data->email;
 		$password = $data->password;
 
@@ -70,6 +75,23 @@ Class Prasadam {
 		if(password_verify($password, $hashedPassword))
 			return true;
 		else return false;
+	}
+
+	public function verifyUser($data){
+		if(!$data || !$data->userName){
+			// If the user hasn't sent any valid info.
+			return null;
+		}
+
+		$userName = $data->userName;
+
+		$extractionQuery = "SELECT * FROM users WHERE username = '".$userName."'";
+		$dbcontroller = new DBController();
+		$users = $dbcontroller->executeSelectQuery($extractionQuery);
+
+		if(!$users || sizeof($users) > 1)
+			return null;
+		else return true;	// User valid.
 	}
 }
 ?>

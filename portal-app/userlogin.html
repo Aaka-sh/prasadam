@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Prasadam - Login</title>
+
+        <link rel="stylesheet" type="text/css" href="./css/prasadam.css" />
+        <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+            integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+            crossorigin="anonymous"
+        />
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <form id="userloginform">
+            <div id="errormessage"></div>
+            <label for="userName">Username/Email : </label>
+            <br />
+            <input
+                type="email"
+                name="userName"
+                id="userName"
+                placeholder="Enter your email/username."
+                class="form-control"
+                required
+            />
+            <br />
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+        <script src="js/constants.js" defer></script>
+        <script src="js/userauth.js" defer></script>
+    </body>
+</html>
