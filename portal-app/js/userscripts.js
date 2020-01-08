@@ -20,3 +20,25 @@ function checkLoggedIn() {
 }
 
 $(document).ready(checkLoggedIn);
+
+function logout(event) {
+    event.preventDefault();
+
+    const url = BACKEND + LOGOUTUSER;
+
+    $.ajax({
+        url,
+        success: function(data, textStatus, jQxhr) {
+            let resData = JSON.parse(data);
+            if (jQxhr.status === 200 && resData.message === LOGOUTMESSAGE) {
+                // Successfully logged out.
+                window.location = "userlogin.html";
+            }
+        },
+        error: function(jqXhr, textStatus, errorThrown) {
+            console.error(errorThrown);
+        }
+    });
+}
+
+$("#logoutbutton").click(logout);
