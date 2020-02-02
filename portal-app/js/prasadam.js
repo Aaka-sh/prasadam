@@ -75,195 +75,31 @@ $(document).ready(function() {
     $("#dinner").click(function(e) {
         alert(3);
     });
-    //var checkBox = $("#fc-event-container").find(".fc-title").getElementById("breakfast");
-
-    if ($("#responseData").html() !== undefined) {
-        var jsonData = JSON.parse(
-            $("#responseData")
-                .html()
-                .replace(/&quot;/g, '"') != ""
-                ? $("#responseData")
-                      .html()
-                      .replace(/&quot;/g, '"')
-                : "[]"
-        );
-    } else {
-        var jsonData = null;
-    }
-    var counters = "[";
-    //if(jsonData !=null && jsonData.length>0 ){
-    var currentDate = new Date();
-    //var dayInMonth = daysInMonth(currentDate.getMonth(),currentDate.getFullYear());
-    //var dayInNextMonth = daysInMonth(currentDate.getMonth()+1,currentDate.getFullYear());
-    var nextMonth = new Date(currentDate);
-    var nextMonthDate = new Date(
-        new Date(nextMonth).setMonth(nextMonth.getMonth() + "2")
-    );
-    var dayInCurrentMonth = daysInMonth(
-        currentDate.getMonth(),
-        currentDate.getFullYear()
-    );
-    var dayInNextMonth = daysInMonth(
-        nextMonthDate.getMonth(),
-        nextMonthDate.getFullYear()
-    );
-    for (
-        var i = currentDate.getMonth() + 1;
-        i < nextMonthDate.getMonth();
-        i++
-    ) {
-        dayInNextMonth =
-            dayInNextMonth +
-            daysInMonth(
-                currentDate.getMonth() + i,
-                nextMonthDate.getFullYear()
-            );
-    }
-
-    var flagFormatchday = false;
-    var count = dayInNextMonth;
-
-    for (var j = 0; j < count; j++) {
-        var newdate;
-        if (newdate == null) {
-            newdate = new Date(currentDate);
-        } else {
-            newdate = new Date(newdate);
-        }
-        newdate.setDate(newdate.getDate() + 1);
-
-        flagFormatchday = false;
-        var year1 = newdate.getFullYear();
-        var day1 =
-            newdate.getDate() < 10
-                ? "0" + newdate.getDate()
-                : newdate.getDate();
-        var month1 =
-            parseInt(newdate.getMonth()) + 1 < 10
-                ? "0" + (parseInt(newdate.getMonth()) + 1)
-                : parseInt(newdate.getMonth()) + 1;
-        var minutes1 =
-            newdate.getMinutes() < 10
-                ? "0" + newdate.getMinutes()
-                : newdate.getMinutes();
-        var hours1 =
-            newdate.getHours() < 10
-                ? "0" + newdate.getHours()
-                : newdate.getHours();
-        var isoDate1 =
-            year1 +
-            "-" +
-            month1 +
-            "-" +
-            day1 +
-            "T" +
-            hours1 +
-            ":" +
-            minutes1 +
-            ":00+00:00";
-        if (jsonData == "undefined") {
-            alert("Sorry Appointment Data Is Not Available");
-            var zipCode = $("#searchquery").val();
-            var radius = $("#radius").val();
-            var url =
-                Urls.getStore + "?searchquery=" + zipCode + "&radius=" + radius;
-            window.location.href = url;
-            return;
-        }
-        if (jsonData !== null) {
-            for (var k = 0; k < jsonData.Days.length; k++) {
-                var availbaleSlots = jsonData.Days[k].availableTimeSlots;
-                var dateString1 = jsonData.Days[k].Date; //+''+availbaleSlots[i].startTime;
-                var dateString2 = jsonData.Days[k].Date;
-                var CDate1 = new Date(Date.parse(dateString1));
-                var CDate2 = new Date(Date.parse(dateString2));
-                var year = CDate1.getFullYear();
-                var day =
-                    CDate1.getDate() < 10
-                        ? "0" + CDate1.getDate()
-                        : CDate1.getDate();
-                var month =
-                    parseInt(CDate1.getMonth()) + 1 < 10
-                        ? "0" + (parseInt(CDate1.getMonth()) + 1)
-                        : parseInt(CDate1.getMonth()) + 1;
-                var minutes =
-                    CDate1.getMinutes() < 10
-                        ? "0" + CDate1.getMinutes()
-                        : CDate1.getMinutes();
-                var hours =
-                    CDate1.getHours() < 10
-                        ? "0" + CDate1.getHours()
-                        : CDate1.getHours();
-                var isoDate =
-                    year +
-                    "-" +
-                    month +
-                    "-" +
-                    day +
-                    "T" +
-                    hours +
-                    ":" +
-                    minutes +
-                    ":00+00:00";
-                if (
-                    day1 == day &&
-                    month == month1 &&
-                    typeof availbaleSlots != "undefined"
-                ) {
-                    counters +=
-                        '{"title":"' +
-                        availbaleSlots.length +
-                        ' Available","start":"' +
-                        isoDate +
-                        '"},';
-                    flagFormatchday = true;
-                }
-            }
-        }
-        if (flagFormatchday == false) {
-            counters +=
-                '{"title":"None Available","start":"' + isoDate1 + '"},';
-        }
-    }
-
-    counters = counters.substring(0, counters.length - 1);
-    //}
-    counters += "]";
-
-    var eventArray = JSON.parse(counters);
 
     if ($("#calendar").length > 0) {
+        let Year = new Date().getFullYear(); 
+        let month = new Date().getMonth();
+        month = month+1;
+
         $("#calendar").fullCalendar({
-            header: {
-                left: "prev,next",
-                center: "title",
-                right: "month,agendaWeek,agendaDay"
+            defaultView: 'month',
+            headers: {
+                left: 'title',
+                center: '',
+                right: 'today'
             },
-            events: eventArray,
-            eventClick: function(calEvent, jsEvent, view) {
-                if (view) {
-                    var tdActive = $(
-                        "td.fc-day-number[data-date='" + date + "']"
-                    );
-                    var tdEvent = tdActive
-                        .closest("table")
-                        .find("tbody td")
-                        .eq(tdActive.index());
-                    alert(tdEvent);
-                    //document.getElementById("slotId").value = calEvent.id;
-                    //document.getElementById("timeSlot").value = calEvent.start;
-                    //var favorite = [];
-                    /*$.each($("input[name='prasad']:checked"), function(){            
-                //favorite.push($(this).val());
-                alert($(this).val());
-            });*/
-                    //alert("My favourite sports are: " + favorite.join(", "));
-                    alert($("input[name='breakfast']:checked").val());
-                    //alert($("input[name='lunch']:checked").val());
-                    //alert($("input[name='dinner']:checked").val());
+            viewRender: (currentView) => {
+                // Disabling Prev Button
+                var minDate = moment();
+                if (minDate >= currentView.start && minDate <= currentView.end) {
+                    $(".fc-prev-button").prop('disabled', true); 
+                    $(".fc-prev-button").addClass('fc-state-disabled'); 
                 }
-            },
-            eventAfterAllRender: function(view) {}
+                else {
+                    $(".fc-prev-button").removeClass('fc-state-disabled'); 
+                    $(".fc-prev-button").prop('disabled', false); 
+                }
+            }
         });
     }
 });

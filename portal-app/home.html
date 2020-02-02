@@ -25,8 +25,7 @@
         name="date"
         id="selectedDate"
       /><br /><br />
-
-      <input type="button" value="View Count" id="view" class="button" />
+      <input type="submit" value="View Count" id="view" class="button" />
 
       <h3 align="center"><b>Prasadam Count:</b></h3>
 
@@ -47,6 +46,8 @@
     </fieldset>
 
     <fieldset align="center">
+      <div id="alerter"></div>
+      <br />
       <legend>Add New Devotee?</legend>
       <form id="adderform">
         Enter Your Mail-Id:
@@ -58,9 +59,8 @@
           class="form-control"
           placeholder="Email Address for user"
           required
-        /><br /><br />
-        <input type="button" id="reg_btn" value="Add Devotee" class="button" />
-        <div id="alerter"></div>
+        /><br />
+        <input type="submit" id="reg_btn" value="Add Devotee" class="button" />
       </form>
     </fieldset>
   </body>
