@@ -238,6 +238,8 @@ class PrasadamRestHandler extends SimpleRest {
 		else{
 			$nPrasadam = $prasadam->get_prasadam_count($cancellationTime, $cancellationDate);
 			$resObject->nPrasadam = $nPrasadam;
+			$resObject->prasadamTime = $cancellationTime;
+			$resObject->prasadamDate = $cancellationDate;
 		}
 
 		$requestContentType = 'application/json';//$_POST['HTTP_ACCEPT'];

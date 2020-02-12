@@ -6,3 +6,5 @@ const LOGOUTADMIN = "logoutadmin/";
 const LOGOUTMESSAGE = "Successfully logged out!";
 const USERLOGIN = "loginuser/";
 const LOGOUTUSER = "logoutuser/";
+const GETNPRASADAM = "getnprasadam/";
+const TIMINGS = ["Breakfast", "Lunch"];

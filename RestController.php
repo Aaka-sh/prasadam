@@ -1,5 +1,6 @@
 <?php
 session_start();
+error_reporting(0);
 require_once("constants.php");
 require_once("errors.php");
 require_once("PrasadamRestHandler.php");	

@@ -13,6 +13,7 @@
     <script src="./js/constants.js" defer></script>
     <script src="./js/prasadam.js" defer></script>
     <script src="./js/homeauth.js" defer></script>
+    <script src="./js/adminscripts.js" defer></script>
   </head>
   <body>
     <b>Hare Krishna Welcome to admin portal</b>
@@ -21,27 +22,15 @@
       <legend align="center">Prasadam Count</legend>
 
       Select Date :<input
-        type="Date"
+        type="date"
         name="date"
         id="selectedDate"
       /><br /><br />
-      <input type="submit" value="View Count" id="view" class="button" />
+      <input type="submit" value="View Count" id="view" class="button" onclick="getPrasadamForDate(event)" />
 
       <h3 align="center"><b>Prasadam Count:</b></h3>
 
       <table id="prasadcount" bgcolor="pink" align="center" border="2">
-        <tr>
-          <th>Breakfast</th>
-          <th>Lunch</th>
-          <th>Dinner</th>
-          <th>Total Count</th>
-        </tr>
-        <tr>
-          <td id="breakfast"></td>
-          <td id="lunch"></td>
-          <td id="dinner"></td>
-          <td id="total"></td>
-        </tr>
       </table>
     </fieldset>
 
