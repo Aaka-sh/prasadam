@@ -12,7 +12,7 @@ $(document).ready(function() {
                 return this.value + ",";
             })
             .toArray();
-        var sendInfo = {
+        var sendInfo ={
             username: "RamKrishna",
             chooseprasad: prasadam,
             prasaddate: $("#selectedDate").val()
@@ -75,7 +75,12 @@ $(document).ready(function() {
     $("#dinner").click(function(e) {
         alert(3);
     });
+});
 
+$(document).ready(() => {
+    // 1. Get all the dates for the month with cancelled subscription.
+    // 2. Once we get it, render the calendar.
+    
     if ($("#calendar").length > 0) {
         let Year = new Date().getFullYear(); 
         let month = new Date().getMonth();
@@ -99,6 +104,9 @@ $(document).ready(function() {
                     $(".fc-prev-button").removeClass('fc-state-disabled'); 
                     $(".fc-prev-button").prop('disabled', false); 
                 }
+            },
+            dayRender: function (date, cell) {
+                
             }
         });
     }

@@ -10,6 +10,35 @@ Class Prasadam {
 	/*
 		you should hookup the DAO here
 	*/
+
+	/* Prasadam Functions */
+	private function date_exists($date, $cancellationTime){
+		// Function to check if a cancellation with a certain date already exists.
+		$query = "SELECT * FROM ".PRASADAMTABLE." WHERE recorddate = '".$date."' AND recordfor = '".$cancellationTime."'";
+		$dbcontroller = new DBController();
+		$res = $dbcontroller->executeSelectQuery($query);
+		if(!$res || sizeof($res) <= 0 || empty($res)){
+			return false;
+		}
+		else{
+			return $res[0];
+		}
+	}
+
+	private function addFreshCancellation($cancellationDate, $cancellationTime, $userid){
+		if($cancellationTime && $userid && $cancellationDate){
+			$dbcontroller = new DBController();
+			$userids = json_encode(array($userid));
+			$query = "INSERT INTO ".PRASADAMTABLE."(recorddate, recordfor, userids) VALUES('".$cancellationDate."', '".$cancellationTime."', '".$userids."')";
+			var_dump($query);
+			if($dbcontroller->executeInsertQuery($query) === "success") return true;
+			else return false;
+		}
+		else return false;
+	}
+
+	/* General Functions */
+
 	public function getAllPrasadam(){
 		$query = "SELECT * FROM tbl_prasadam";
 		$dbcontroller = new DBController();
@@ -88,10 +117,86 @@ Class Prasadam {
 		$extractionQuery = "SELECT * FROM users WHERE username = '".$userName."'";
 		$dbcontroller = new DBController();
 		$users = $dbcontroller->executeSelectQuery($extractionQuery);
-
 		if(!$users || sizeof($users) > 1)
 			return null;
-		else return true;	// User valid.
+		else return $users[0]["id"];	// User valid.
+	}
+
+	public function cancelPrasadam($cancellationDetails){
+		$cancellationTime = $cancellationDetails->cancellationTime;
+		$cancellationDates = $cancellationDetails->cancellationDates;
+		$error = false;
+
+		foreach($cancellationDates as $date){
+			$existingDateRecord = $this->date_exists($date, $cancellationTime);
+
+			if($existingDateRecord){
+				// There is a date in the records for this.
+				$userIds = json_decode($existingDateRecord['userids']);
+
+				if(in_array($_SESSION[USERIDSESSNAME], $userIds)){
+					// User has already cancelled for this date and is just messing around.
+					continue;
+				}
+				else{
+					$userIds[] = $_SESSION[USERIDSESSNAME];	// Add the userid to the list.
+
+					// Now update the record.
+					$newUserIds = json_encode($userIds);
+
+					$updateQuery = "UPDATE ".PRASADAMTABLE." SET userids = '".$newUserIds."' WHERE recorddate = '".$date."' AND recordfor = '".$cancellationTime."'";
+					$dbcontroller = new DBController();
+
+					echo "here";
+
+					if(!$dbcontroller->executeUpdateQuery($updateQuery)){
+						$error = true;
+						break;
+					}
+				}
+			}
+			else{
+				// Create a fresh record of the cancellation.
+
+				if(!$this->addFreshCancellation($date, $cancellationTime, $_SESSION[USERIDSESSNAME]))
+					$error = true;
+			}
+		}
+
+		if($error) return false;	// Could not insert all entries.
+		else return true;	// Inserted all entries.
+	}
+
+	public function get_prasadam_count($cancellationTime, $cancellationDate = null){
+		// Function to get the number of cancellations on a single date.
+		// For a specific time.
+
+		if(!$cancellationTime)
+			return null;
+
+		$date = $cancellationDate;
+
+		if(!$date)
+			$date = date("Y-m-d");
+
+		$dbhandler = new DBController();
+
+		$userCounterQuery = "SELECT count(*) AS 'nusers' FROM users;";
+		$extractionQuery = "SELECT * FROM ".PRASADAMTABLE." WHERE recordfor='".$cancellationTime."' AND recorddate='".$date."'";
+
+		$nusers = $dbhandler->executeSelectQuery($userCounterQuery);
+
+		if(!$nusers) return 0;	// Error in fetching or no users, no cancellations, no need to calculate further.
+		$nusers = $nusers[0]['nusers'];	// Since we fetched the row as 'nusers'.
+
+		$cancellationRecord = $dbhandler->executeSelectQuery($extractionQuery);
+
+		$userids = $cancellationRecord[0] ? json_decode($cancellationRecord[0]['userids']) : null;
+		$useridsLength = is_array($userids) ? sizeof($userids) : 0;
+
+		$nprasadam = $nusers - $useridsLength;
+
+		return $nprasadam;
 	}
 }
 ?>

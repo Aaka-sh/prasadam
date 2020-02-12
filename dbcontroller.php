@@ -20,11 +20,15 @@ class DBController {
 
 	function executeSelectQuery($query) {
 		$result = mysqli_query($this->conn,$query);
-		while($row=mysqli_fetch_assoc($result)) {
-			$resultset[] = $row;
+		if($result){
+			while($row=mysqli_fetch_assoc($result)) {
+				$resultset[] = $row;
+			}	
+			if(!empty($resultset))
+				return $resultset;
+			else return null;
 		}
-		if(!empty($resultset))
-			return $resultset;
+		else return null;
 	}
 
 	function executeInsertQuery($query) {
@@ -33,6 +37,11 @@ class DBController {
     	}else{
     		return "failed";
     	}
+	}
+
+	function executeUpdateQuery($query){
+		if($query && mysqli_query($this->conn, $query)) return true;
+		else return false;
 	}
 }
 ?>

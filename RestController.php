@@ -1,7 +1,7 @@
 <?php
 session_start();
-error_reporting(0);
 require_once("constants.php");
+require_once("errors.php");
 require_once("PrasadamRestHandler.php");	
 $view = "";
 
@@ -98,6 +98,34 @@ switch($view){
 		else $resOb->message = SOMEERROR;
 		echo json_encode($resOb);
 		break;
+	case "cancelprasadam":
+		if(!$_SESSION[USERSESSNAME] || !$_SESSION[USERIDSESSNAME]){
+			echo error(USERNOTLOGGEDIN);
+			break;
+		}
+		
+		$cancellationDetails = json_decode($_POST[CANCELLATIONDATA]);
+		$prasadmRestHandler = new PrasadamRestHandler();
+		$prasadmRestHandler->cancelPrasadam($cancellationDetails);
+
+		break;
+	case "getnprasadam":
+		if(!$_SESSION[ADMINSESSNAME]){
+			echo error(USERNOTLOGGEDIN);
+			break;
+		}
+
+		$cancellationTime = null;
+		$cancellationDate = null;
+
+		if($_POST['cancellationTime'])
+			$cancellationTime = $_POST['cancellationTime'];
+
+		if($_POST['cancellationDate'])
+			$cancellationDate = $_POST['cancellationDate'];
+
+		$prasadmRestHandler = new PrasadamRestHandler();
+		$prasadmRestHandler->getnPrasadam($cancellationTime, $cancellationDate);
 	case "" :
 		//404 - not found;
 		break;

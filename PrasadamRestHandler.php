@@ -145,17 +145,19 @@ class PrasadamRestHandler extends SimpleRest {
 	public function verifyUser($data){
 		$prasad = new Prasadam();
 		$isValid = $prasad->verifyUser($data);
-		$successValue  = USERVALID;
+		$successValue = USERVALID;
 
 		$result = new stdClass();
 		if($isValid){
 			$statusCode = 200;
 			$_SESSION[USERSESSNAME] = true;
+			$_SESSION[USERIDSESSNAME] = $isValid;
 			$result->output = $successValue;
 		}
 		else{
 			$statusCode = 400;
 			$_SESSION[USERSESSNAME] = false;
+			$_SESSION[USERIDSESSNAME] = null;
 			$result->error = USERINVALID;
 		}
 
@@ -188,6 +190,60 @@ class PrasadamRestHandler extends SimpleRest {
 		$resObject = json_encode($resObject);
 
 		echo $resObject;
+	}
+
+	public function cancelPrasadam($cancellationDetails){
+		$prasadam = new Prasadam();
+		$cancellationTime = $cancellationDetails->cancellationTime;
+		$cancellationDates = $cancellationDetails->cancellationDates;
+
+		$resObject = new stdClass();
+		$statusCode = 201;
+
+		if(
+			!$cancellationTime || 
+			($cancellationTime != LUNCH && $cancellationTime != BREAKFAST)
+			|| sizeof($cancellationDates) <= 0
+		){
+			$statusCode = 400;
+			$resObject->error = INCOMPLETEDATA;
+		}
+		else{
+			$inserted = $prasadam->cancelPrasadam($cancellationDetails);
+
+			if($inserted){
+				$resObject->message = CANCELLEDPRASADAM;
+			}
+			else{
+				$statusCode = 500;
+				$resObject->error = SOMEERROR;
+			}
+
+			$requestContentType = 'application/json';//$_POST['HTTP_ACCEPT'];
+			$this->setHttpHeaders($requestContentType, $statusCode);
+		}
+
+		echo json_encode($resObject);
+	}
+
+	public function getnPrasadam($cancellationTime, $cancellationDate){
+		$prasadam = new Prasadam();
+		$resObject = new stdClass();
+		$statusCode = 200;
+
+		if(!$cancellationTime){
+			$statusCode = 400;
+			$resObject->error = INCOMPLETEDATA;
+		}
+		else{
+			$nPrasadam = $prasadam->get_prasadam_count($cancellationTime, $cancellationDate);
+			$resObject->nPrasadam = $nPrasadam;
+		}
+
+		$requestContentType = 'application/json';//$_POST['HTTP_ACCEPT'];
+		$this->setHttpHeaders($requestContentType, $statusCode);
+
+		echo json_encode($resObject);
 	}
 }
 ?>
