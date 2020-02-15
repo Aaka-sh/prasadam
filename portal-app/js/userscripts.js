@@ -42,3 +42,27 @@ function logout(event) {
 }
 
 $("#logoutbutton").click(logout);
+
+function getMonthCancellations(
+    cancellationTime = TIMINGS[0],
+    monthNum = new Date().getMonth() + 1,
+    callback = function(){}
+) {
+    const url =
+        BACKEND +
+        GERUSERCANCELLATIONS +
+        "?cancellationTime=" +
+        cancellationTime.toLowerCase() +
+        "&month=" +
+        monthNum;
+
+    $.ajax({
+        url,
+        success: function(data, textStatus, jQxhr) {
+            return callback(data);
+        },
+        error: function(jqXhr, textStatus, errorThrown) {
+            console.error(errorThrown);
+        }
+    });
+}

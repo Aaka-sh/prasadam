@@ -12,7 +12,7 @@ $(document).ready(function() {
                 return this.value + ",";
             })
             .toArray();
-        var sendInfo ={
+        var sendInfo = {
             username: "RamKrishna",
             chooseprasad: prasadam,
             prasaddate: $("#selectedDate").val()
@@ -80,33 +80,102 @@ $(document).ready(function() {
 $(document).ready(() => {
     // 1. Get all the dates for the month with cancelled subscription.
     // 2. Once we get it, render the calendar.
-    
+    let cancellationDet = [];
+
+    function isCancellationDate(dateStr, cancellationDet, cancellationTime) {
+        for (let c in cancellationDet) {
+            if (
+                cancellationDet[c].cancellationDates.indexOf(dateStr) >= 0 &&
+                cancellationDet[c].prasadamTime === cancellationTime
+            )
+                return cancellationDet[c].prasadamTime;
+        }
+        return false;
+    }
+
+    function findCancellations(){
+
+    }
+
+    function renderCells(cell, cancellationDet) {
+        cell.innerHTML = "";
+
+        if (
+            !cell.classList.contains("fc-past") &&
+            !cell.classList.contains("fc-today") &&
+            !cell.classList.contains("fc-other-month")
+        ) {
+            let date = cell.getAttribute("data-date");
+
+            TIMINGS.forEach(timing => {
+                let isCancelled = isCancellationDate(
+                    date,
+                    cancellationDet,
+                    timing.toLowerCase()
+                );
+
+                if (isCancelled)
+                    cell.innerHTML += "Cancelled for " + timing + "<br/>";
+                else
+                    cell.innerHTML += `<div class='checkcontainer'>
+                        <input type='checkbox' class='${timing.toLowerCase()}-check' data-date='${date}'></input>
+                        &nbsp;<label>Cancel ${timing}</label>
+                    </div>`;
+            });
+        }
+    }
+
     if ($("#calendar").length > 0) {
-        let Year = new Date().getFullYear(); 
+        let Year = new Date().getFullYear();
         let month = new Date().getMonth();
-        month = month+1;
+        month = month + 1;
 
         $("#calendar").fullCalendar({
-            defaultView: 'month',
+            defaultView: "month",
             headers: {
-                left: 'title',
-                center: '',
-                right: 'today'
+                left: "title",
+                center: "",
+                right: "today"
             },
-            viewRender: (currentView) => {
+            dayRender: function(date, cell) {
+                cell[0].innerHTML = "";
+            },
+            viewRender: function(currentView) {
                 // Disabling Prev Button
                 var minDate = moment();
-                if (minDate >= currentView.start && minDate <= currentView.end) {
-                    $(".fc-prev-button").prop('disabled', true); 
-                    $(".fc-prev-button").addClass('fc-state-disabled'); 
+                if (
+                    minDate >= currentView.start &&
+                    minDate <= currentView.end
+                ) {
+                    $(".fc-prev-button").prop("disabled", true);
+                    $(".fc-prev-button").addClass("fc-state-disabled");
+                } else {
+                    $(".fc-prev-button").removeClass("fc-state-disabled");
+                    $(".fc-prev-button").prop("disabled", false);
                 }
-                else {
-                    $(".fc-prev-button").removeClass('fc-state-disabled'); 
-                    $(".fc-prev-button").prop('disabled', false); 
-                }
-            },
-            dayRender: function (date, cell) {
-                
+
+                // Getting the cancellations for the current active month.
+
+                TIMINGS.forEach(timing => {
+                    getMonthCancellations(
+                        timing,
+                        $("#calendar")
+                            .fullCalendar("getDate")
+                            ._d.getMonth() + 1,
+                        function(data) {
+                            if (data) {
+                                cancellationDet.push(data);
+                                $("td.fc-day.fc-widget-content").each(
+                                    function() {
+                                        renderCells(this, cancellationDet);
+                                    }
+                                );
+                            }
+                        }
+                    );
+                });
+
+                console.log($(".fc-right"));
             }
         });
     }

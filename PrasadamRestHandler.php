@@ -247,5 +247,32 @@ class PrasadamRestHandler extends SimpleRest {
 
 		echo json_encode($resObject);
 	}
+
+	public function getUserCancellations($userid, $cancellationTime, $month){
+		$prasadam = new Prasadam();
+		$resObject = new stdClass();
+		$statusCode = 200;
+
+		if(!$month)
+			$month = date('m');
+
+		if(!$cancellationTime)
+			$cancellationTime = BREAKFAST;
+
+		if(!$userid){
+			$statusCode = 400;
+			$resObject->error = INCOMPLETEDATA;
+		}
+		else{
+			$cancellationDates = $prasadam->getUserCancellations($userid, $cancellationTime, $month);
+			$resObject->cancellationDates = $cancellationDates;
+			$resObject->prasadamTime = $cancellationTime;
+		}
+
+		$requestContentType = 'application/json';//$_POST['HTTP_ACCEPT'];
+		$this->setHttpHeaders($requestContentType, $statusCode);
+
+		echo json_encode($resObject);
+	}
 }
 ?>

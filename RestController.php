@@ -127,6 +127,21 @@ switch($view){
 
 		$prasadmRestHandler = new PrasadamRestHandler();
 		$prasadmRestHandler->getnPrasadam($cancellationTime, $cancellationDate);
+	case "getusercancellations":
+		if(!$_SESSION[USERSESSNAME] || !$_SESSION[USERIDSESSNAME]){
+			echo error(USERNOTLOGGEDIN);
+			break;
+		}
+
+		$cancellationTime = $_GET['cancellationTime'];
+		$month = $_GET['month'];
+
+		$userid = $_SESSION[USERIDSESSNAME];
+
+		$prasadmRestHandler = new PrasadamRestHandler();
+		$prasadmRestHandler->getUserCancellations($userid, $cancellationTime, $month);
+		
+		break;
 	case "" :
 		//404 - not found;
 		break;

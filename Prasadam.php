@@ -198,5 +198,30 @@ Class Prasadam {
 
 		return $nprasadam;
 	}
+
+	public function getUserCancellations($userid, $cancellationTime, $month){
+		$month_name = date("F", mktime(0, 0, 0, $month, 10)); 
+
+		$firstDate = date("Y-".$month."-01", strtotime($month_name));
+		$lastDate = date("Y-".$month."-t", strtotime($month_name));
+
+		$selectionQuery = "SELECT recorddate FROM ".PRASADAMTABLE." 
+								WHERE recordfor='".$cancellationTime."' 
+								AND userids LIKE '%\"".$userid."\"%' 
+								AND (
+									recorddate BETWEEN '".$firstDate."' AND '".$lastDate."'
+							)";
+
+		$dbhandler = new DBController();
+		$cancellationDatesRecord = $dbhandler->executeSelectQuery($selectionQuery);
+
+		$cancellationDates = array();
+
+		if($cancellationDatesRecord)
+			foreach($cancellationDatesRecord as $date)
+				array_push($cancellationDates, $date['recorddate']);
+		
+		return $cancellationDates;
+	}
 }
 ?>
