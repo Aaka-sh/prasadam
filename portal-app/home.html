@@ -16,28 +16,41 @@
     <script src="./js/adminscripts.js" defer></script>
   </head>
   <body>
-    <b>Hare Krishna Welcome to admin portal</b>
-    <i><a href="login.html" id="logoutlink">Logout</a></i>
-    <fieldset align="center">
-      <legend align="center">Prasadam Count</legend>
+    <div id="top-header"> 
+      <div style ="color : white;" id="harekrihna"> 
+          <b><i>Admin portal</i></b> 
+      </div>     
+    
+      <nav id="menu"> 
+          <ul> 
+              <li><a class="logoutlink" href="login.html" id="logoutlink">Logout</a></li> 
+          </ul>
+      </nav> 
+      </div>  
+    <fieldset class="formcontainer">
+      <h3>Prasadam Count</h3>
 
       Select Date :<input
         type="date"
         name="date"
         id="selectedDate"
-      /><br /><br />
-      <input type="submit" value="View Count" id="view" class="button" onclick="getPrasadamForDate(event)" />
-
+        class="form-control"
+      />
+      <br />
+      <input type="submit" class="btn btn-primary" value="View Count" id="view" class="button" onclick="getPrasadamForDate(event)" />
+      <br />
+      <br />
       <h3 align="center"><b>Prasadam Count:</b></h3>
-
-      <table id="prasadcount" bgcolor="pink" align="center" border="2">
+    
+      <table id="prasadcount" bgcolor="white" align="center" border="1">
       </table>
     </fieldset>
 
-    <fieldset align="center">
+    <br />
+    
+    <fieldset align="center" class="formcontainer">
       <div id="alerter"></div>
-      <br />
-      <legend>Add New Devotee?</legend>
+      <h3>Add New Devotee?</h3>
       <form id="adderform">
         Enter Your Mail-Id:
 
@@ -49,7 +62,7 @@
           placeholder="Email Address for user"
           required
         /><br />
-        <input type="submit" id="reg_btn" value="Add Devotee" class="button" />
+        <input type="submit" class="btn btn-primary" id="reg_btn" value="Add Devotee" class="button" />
       </form>
     </fieldset>
   </body>

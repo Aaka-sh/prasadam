@@ -127,6 +127,7 @@ switch($view){
 
 		$prasadmRestHandler = new PrasadamRestHandler();
 		$prasadmRestHandler->getnPrasadam($cancellationTime, $cancellationDate);
+		break;
 	case "getusercancellations":
 		if(!$_SESSION[USERSESSNAME] || !$_SESSION[USERIDSESSNAME]){
 			echo error(USERNOTLOGGEDIN);

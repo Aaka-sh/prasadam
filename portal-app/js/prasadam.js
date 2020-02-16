@@ -77,6 +77,10 @@ $(document).ready(function() {
     });
 });
 
+/*
+    The Following is the heart of the app. Do not alter in any way.
+*/
+
 $(document).ready(() => {
     // 1. Get all the dates for the month with cancelled subscription.
     // 2. Once we get it, render the calendar.
@@ -93,12 +97,49 @@ $(document).ready(() => {
         return false;
     }
 
-    function findCancellations(){
+    function sendCancellations() {
+        // Finding each cancellation
+        TIMINGS.forEach(timing => {
+            let $timingCancellations = [];
 
+            $checkBoxCollection = $(`.${timing.toLowerCase()}-check`);
+
+            for (let $cell of $checkBoxCollection) {
+                if (!$cell.checked) {
+                    $timingCancellations.push($cell.getAttribute("data-date"));
+                }
+            }
+
+            // We have the cancellations.
+
+            if ($timingCancellations.length > 0) {
+                // Send cancellation request and refresh the system.
+                const url = BACKEND + CANCELUSERPRASADAM;
+                const objToSend = JSON.stringify({
+                    cancellationTime: timing.toLowerCase(),
+                    cancellationDates: $timingCancellations
+                });
+
+                $.ajax({
+                    url,
+                    type: "POST",
+                    contentType: "application/x-www-form-urlencoded",
+                    data: "data=" + objToSend,
+                    success: function(data) {
+                        console.log(data);
+                    },
+                    error: function(jqXhr, textStatus, errorThrown) {
+                        console.log(errorThrown);
+                    }
+                });
+
+                getActiveCancellations();
+            }
+        });
     }
 
     function renderCells(cell, cancellationDet) {
-        cell.innerHTML = "";
+        cell.innerHTML = "<div class='checkwrapper'>";
 
         if (
             !cell.classList.contains("fc-past") &&
@@ -118,11 +159,33 @@ $(document).ready(() => {
                     cell.innerHTML += "Cancelled for " + timing + "<br/>";
                 else
                     cell.innerHTML += `<div class='checkcontainer'>
-                        <input type='checkbox' class='${timing.toLowerCase()}-check' data-date='${date}'></input>
-                        &nbsp;<label>Cancel ${timing}</label>
+                        <input type='checkbox' class='${timing.toLowerCase()}-check' checked="true" data-date='${date}'></input>
+                        &nbsp;<label>${timing}</label>
                     </div>`;
             });
         }
+
+        cell.innerHTML += "</div>";
+    }
+
+    function getActiveCancellations() {
+        // Getting the cancellations for the current active month.
+        TIMINGS.forEach(timing => {
+            getMonthCancellations(
+                timing,
+                $("#calendar")
+                    .fullCalendar("getDate")
+                    ._d.getMonth() + 1,
+                function(data) {
+                    if (data) {
+                        cancellationDet.push(data);
+                        $("td.fc-day.fc-widget-content").each(function() {
+                            renderCells(this, cancellationDet);
+                        });
+                    }
+                }
+            );
+        });
     }
 
     if ($("#calendar").length > 0) {
@@ -136,6 +199,18 @@ $(document).ready(() => {
                 left: "title",
                 center: "",
                 right: "today"
+            },
+            validRange: function(currentDate) {
+                console.log(currentDate);
+
+                return {
+                    start: currentDate,
+                    end: `${new Date().getFullYear()}-${
+                        new Date().getMonth() + 1 < 10
+                            ? "0" + (new Date().getMonth() + 1)
+                            : new Date().getMonth() + 1
+                    }-31`
+                };
             },
             dayRender: function(date, cell) {
                 cell[0].innerHTML = "";
@@ -154,28 +229,14 @@ $(document).ready(() => {
                     $(".fc-prev-button").prop("disabled", false);
                 }
 
-                // Getting the cancellations for the current active month.
+                getActiveCancellations();
 
-                TIMINGS.forEach(timing => {
-                    getMonthCancellations(
-                        timing,
-                        $("#calendar")
-                            .fullCalendar("getDate")
-                            ._d.getMonth() + 1,
-                        function(data) {
-                            if (data) {
-                                cancellationDet.push(data);
-                                $("td.fc-day.fc-widget-content").each(
-                                    function() {
-                                        renderCells(this, cancellationDet);
-                                    }
-                                );
-                            }
-                        }
-                    );
-                });
-
-                console.log($(".fc-right"));
+                // Adding a submit button for cancelling prasadam.
+                let buttonHTML = `<button class='btn btn-primary' id='senderButton'>
+                    Submit
+                </button>`;
+                $(".fc-center").html(buttonHTML);
+                $("#senderButton").click(sendCancellations);
             }
         });
     }

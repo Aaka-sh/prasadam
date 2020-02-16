@@ -7,6 +7,7 @@ const LOGOUTMESSAGE = "Successfully logged out!";
 const USERLOGIN = "loginuser/";
 const LOGOUTUSER = "logoutuser/";
 const GETNPRASADAM = "getnprasadam/";
+const CANCELUSERPRASADAM = "cancelprasadam/";
 const GERUSERCANCELLATIONS = "getusercancellations/";
-
+const NOCANCELLATIONSFOUND = "No Cancellations Found.";
 const TIMINGS = ["Breakfast", "Lunch"];

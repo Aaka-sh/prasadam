@@ -30,8 +30,7 @@ Class Prasadam {
 			$dbcontroller = new DBController();
 			$userids = json_encode(array($userid));
 			$query = "INSERT INTO ".PRASADAMTABLE."(recorddate, recordfor, userids) VALUES('".$cancellationDate."', '".$cancellationTime."', '".$userids."')";
-			var_dump($query);
-			if($dbcontroller->executeInsertQuery($query) === "success") return true;
+			if($dbcontroller->executeInsertQuery($query) === 'sucess') return true;
 			else return false;
 		}
 		else return false;
@@ -61,8 +60,8 @@ Class Prasadam {
 		$prasaddate = $data->prasaddate;
 		$query = "INSERT INTO tbl_prasadam(username,chooseprasad,prasaddate) VALUES ('$userName','$chooseprasad','$prasaddate')";
 		$dbcontroller = new DBController();
-		$sucessValue = $dbcontroller->executeInsertQuery($query);
-		return $sucessValue;
+		$successValue = $dbcontroller->executeInsertQuery($query);
+		return $successValue;
 	}
 
 	public function addUser($data){
@@ -79,8 +78,8 @@ Class Prasadam {
 		}
 
 		$query = "INSERT INTO users(username) VALUES ('$userName')";
-		$sucessValue = $dbcontroller->executeInsertQuery($query);
-		return $sucessValue;
+		$successValue = $dbcontroller->executeInsertQuery($query);
+		return $successValue;
 	}
 
 	public function verifyAdmin($data){
@@ -146,8 +145,6 @@ Class Prasadam {
 
 					$updateQuery = "UPDATE ".PRASADAMTABLE." SET userids = '".$newUserIds."' WHERE recorddate = '".$date."' AND recordfor = '".$cancellationTime."'";
 					$dbcontroller = new DBController();
-
-					echo "here";
 
 					if(!$dbcontroller->executeUpdateQuery($updateQuery)){
 						$error = true;
