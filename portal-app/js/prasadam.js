@@ -63,18 +63,6 @@ $(document).ready(function() {
             }
         });
     });
-
-    $("#breakfast").click(function(e) {
-        alert(1);
-    });
-
-    $("#lunch").click(function(e) {
-        alert(2);
-    });
-
-    $("#dinner").click(function(e) {
-        alert(3);
-    });
 });
 
 /*
@@ -126,10 +114,26 @@ $(document).ready(() => {
                     contentType: "application/x-www-form-urlencoded",
                     data: "data=" + objToSend,
                     success: function(data) {
-                        console.log(data);
+                        $("#alerter").html(
+                            "<br/><div class='alert alert-success'>" +
+                                data.message +
+                                "</div>"
+                        );
+
+                        setInterval(() => {
+                            $("#alerter").html("");
+                        }, 2000);
                     },
                     error: function(jqXhr, textStatus, errorThrown) {
-                        console.log(errorThrown);
+                        $("#alerter").html(
+                            "<br/><div class='alert alert-danger'>" +
+                                errorThrown +
+                                "</div>"
+                        );
+
+                        setInterval(() => {
+                            $("#alerter").html("");
+                        }, 2000);
                     }
                 });
 
@@ -139,7 +143,7 @@ $(document).ready(() => {
     }
 
     function renderCells(cell, cancellationDet) {
-        cell.innerHTML = "<div class='checkwrapper'>";
+        let cellinnerHTML = "<div class='checkwrapper'>";
 
         if (
             !cell.classList.contains("fc-past") &&
@@ -156,16 +160,22 @@ $(document).ready(() => {
                 );
 
                 if (isCancelled)
-                    cell.innerHTML += "Cancelled for " + timing + "<br/>";
+                    cellinnerHTML += "Cancelled for " + timing + "<br/>";
                 else
-                    cell.innerHTML += `<div class='checkcontainer'>
+                    cellinnerHTML += `<div class='checkcontainer'>
                         <input type='checkbox' class='${timing.toLowerCase()}-check' checked="true" data-date='${date}'></input>
                         &nbsp;<label>${timing}</label>
                     </div>`;
+
+                // Removing the hindering skeleton.
+                for (let tbody of $(".fc-content-skeleton tbody")) {
+                    tbody.outerHTML = "";
+                }
             });
         }
 
-        cell.innerHTML += "</div>";
+        cellinnerHTML += "</div>";
+        cell.innerHTML = cellinnerHTML;
     }
 
     function getActiveCancellations() {
@@ -200,18 +210,17 @@ $(document).ready(() => {
                 center: "",
                 right: "today"
             },
-            validRange: function(currentDate) {
-                console.log(currentDate);
+            // validRange: (function(currentDate) {
 
-                return {
-                    start: currentDate,
-                    end: `${new Date().getFullYear()}-${
-                        new Date().getMonth() + 1 < 10
-                            ? "0" + (new Date().getMonth() + 1)
-                            : new Date().getMonth() + 1
-                    }-31`
-                };
-            },
+            //     return {
+            //         start: currentDate,
+            //         end: `${new Date().getFullYear()}-${
+            //             new Date().getMonth() + 1 < 10
+            //                 ? "0" + (new Date().getMonth() + 1)
+            //                 : new Date().getMonth() + 1
+            //         }-31`
+            //     };
+            // })(),
             dayRender: function(date, cell) {
                 cell[0].innerHTML = "";
             },
@@ -232,9 +241,9 @@ $(document).ready(() => {
                 getActiveCancellations();
 
                 // Adding a submit button for cancelling prasadam.
-                let buttonHTML = `<button class='btn btn-primary' id='senderButton'>
+                let buttonHTML = `<div class='buttoncontainer'><button class='btn btn-primary' id='senderButton'>
                     Submit
-                </button>`;
+                </button></div>`;
                 $(".fc-center").html(buttonHTML);
                 $("#senderButton").click(sendCancellations);
             }

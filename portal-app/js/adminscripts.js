@@ -25,7 +25,7 @@
 
                 tableHTML += `
                     <tr>
-                        <th>${response.prasadamTime}</th>
+                        <th class='prasadtimecell'>${response.prasadamTime}</th>
                         <td>${response.nPrasadam}</td>
                     </tr>
                 `;
@@ -68,7 +68,7 @@ function getPrasadamForDate(event) {
 
                 tableHTML += `
                     <tr>
-                        <th>${response.prasadamTime}</th>
+                        <th class='prasadtimecell'>${response.prasadamTime}</th>
                         <td>${response.nPrasadam}</td>
                     </tr>
                 `;
