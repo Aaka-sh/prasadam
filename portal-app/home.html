@@ -1,69 +1,90 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Prasadam Admin Portal</title>
-    <link rel="stylesheet" type="text/css" href="./css/prasadam.css" />
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-      crossorigin="anonymous"
-    />
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="./js/constants.js" defer></script>
-    <script src="./js/prasadam.js" defer></script>
-    <script src="./js/homeauth.js" defer></script>
-    <script src="./js/adminscripts.js" defer></script>
-  </head>
-  <body>
-    <div id="top-header"> 
-      <div style ="color : white;" id="harekrihna"> 
-          <b><i>ADMIN PORTAL</i></b> 
-      </div>     
-    
-      <nav id="menu"> 
-          <ul> 
-              <li><a class="logoutlink" href="login.html" id="logoutlink">Logout</a></li> 
-          </ul>
-      </nav> 
-      </div>  
-    <fieldset class="formcontainer">
-      <h3>Prasadam Count</h3>
+    <head>
+        <title>Prasadam Admin Portal</title>
+        <link rel="stylesheet" type="text/css" href="./css/prasadam.css" />
+        <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+            integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+            crossorigin="anonymous"
+        />
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="./js/constants.js" defer></script>
+        <script src="./js/prasadam.js" defer></script>
+        <script src="./js/homeauth.js" defer></script>
+        <script src="./js/adminscripts.js" defer></script>
+    </head>
+    <body>
+        <div id="top-header">
+            <div style="color : white;" id="harekrihna">
+                <b><i>ADMIN PORTAL</i></b>
+            </div>
 
-      Select Date :<input
-        type="date"
-        name="date"
-        id="selectedDate"
-        class="form-control"
-      />
-      <br />
-      <input type="submit" class="btn btn-primary" value="View Count" id="view" class="button" onclick="getPrasadamForDate(event)" />
-      <br />
-      <br />
-      <h3 align="center"><b>Prasadam Count:</b></h3>
-    
-      <table id="prasadcount" bgcolor="white" align="center" border="1">
-      </table>
-    </fieldset>
+            <nav id="menu">
+                <ul>
+                    <li>
+                        <a class="logoutlink" href="login.html" id="logoutlink"
+                            >Logout</a
+                        >
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <fieldset class="formcontainer">
+            <h3>Prasadam Count</h3>
 
-    <br />
+            Select Date :<input
+                type="date"
+                name="date"
+                id="selectedDate"
+                class="form-control"
+            />
+            <br />
+            <input
+                type="submit"
+                class="btn btn-primary"
+                value="View Count"
+                id="view"
+                class="button"
+                onclick="getPrasadamForDate(event)"
+            />
+            <br />
+            <br />
+            <h3 align="center"><b>Prasadam Count:</b></h3>
 
-    <fieldset align="center" class="formcontainer">
-      <div id="alerter"></div>
-      <h3>Add New Devotee?</h3>
-      <form id="adderform">
-        Enter Your Mail-Id:
+            <table
+                id="prasadcount"
+                bgcolor="white"
+                align="center"
+                border="1"
+            ></table>
+        </fieldset>
 
-        <input
-          id="username"
-          type="email"
-          name="userName"
-          class="form-control"
-          placeholder="Email Address for user"
-          required
-        /><br />
-        <input type="submit" class="btn btn-primary" id="reg_btn" value="Add Devotee" class="button" />
-      </form>
-    </fieldset>
-  </body>
+        <br />
+
+        <fieldset align="center" class="formcontainer">
+            <div id="alerter"></div>
+            <h3>Add New Devotee?</h3>
+            <form id="adderform">
+                Enter Your Mail-Id:
+
+                <input
+                    id="username"
+                    type="email"
+                    name="userName"
+                    class="form-control"
+                    placeholder="Email Address for user"
+                    required
+                /><br />
+                <input
+                    type="submit"
+                    class="btn btn-primary"
+                    id="reg_btn"
+                    value="Add Devotee"
+                    class="button"
+                />
+            </form>
+        </fieldset>
+    </body>
 </html>
