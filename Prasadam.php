@@ -66,6 +66,7 @@ Class Prasadam {
 
 	public function addUser($data){
 		$userName = $data->userName;
+		$name = $data->name;
 		$dbcontroller = new DBController();
 
 		// Validation.
@@ -77,7 +78,7 @@ Class Prasadam {
 			return -1;
 		}
 
-		$query = "INSERT INTO users(username) VALUES ('$userName')";
+		$query = "INSERT INTO users(username, name) VALUES ('$userName', '$name')";
 		$successValue = $dbcontroller->executeInsertQuery($query);
 		return $successValue;
 	}
@@ -118,7 +119,11 @@ Class Prasadam {
 		$users = $dbcontroller->executeSelectQuery($extractionQuery);
 		if(!$users || sizeof($users) > 1)
 			return null;
-		else return $users[0]["id"];	// User valid.
+		else{
+			// Set user name in session.
+			$_SESSION[NAMESESSION] = $users[0]["name"];
+			return $users[0]["id"];	// User valid.
+		}
 	}
 
 	public function cancelPrasadam($cancellationDetails){

@@ -44,8 +44,11 @@ switch($view){
   	case "adduser":
 		// to handle REST Url prasadam/addUser/
 		$userName = $_POST['userName'];
+		$name = $_POST['name'];
+
 		$data = new stdClass();
 		$data->userName = $userName;
+		$data->name = $name;
 		// Add any other fields here...
 
 		// Converts it into a PHP object
@@ -92,6 +95,9 @@ switch($view){
 		break;
 	case "logoutuser":
 		$_SESSION[USERSESSNAME] = false;
+		$_SESSION[NAMESESSION] = null;
+		$_SESSION[USERIDSESSNAME] = null;
+		
 		$resOb = new stdClass();
 		if(session_destroy()){
 			$resOb->message = LOGOUTMESSAGE;
@@ -142,6 +148,29 @@ switch($view){
 		$prasadmRestHandler = new PrasadamRestHandler();
 		$prasadmRestHandler->getUserCancellations($userid, $cancellationTime, $month);
 		
+		break;
+	case "getdevotees":
+		$prasadmRestHandler = new PrasadamRestHandler();
+		$prasadmRestHandler->getDevotees();
+		break;
+	case "deleteuser":
+		$userid = $_GET['userid'];
+
+		if(!$_SESSION[ADMINSESSNAME]){
+			echo error(USERNOTLOGGEDIN);
+			header("HTTP/1.1 403");
+			break;
+		}
+
+		if(!$userid){
+			echo error(NOIDSENT);
+			header("HTTP/1.1 400");
+			break;
+		}
+
+		$prasadmRestHandler = new PrasadamRestHandler();
+		$prasadmRestHandler->deleteUser($userid);
+
 		break;
 	case "" :
 		//404 - not found;

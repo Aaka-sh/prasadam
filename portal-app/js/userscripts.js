@@ -9,8 +9,11 @@ function checkLoggedIn() {
         url,
         success: (data, textStatus, jQxhr) => {
             let resData = JSON.parse(data);
-            if (jQxhr.status !== 200 || !resData.isLoggedIn) {
+            if (jQxhr.status !== 200 || !resData.isLoggedIn || !resData.name) {
                 window.location = "userlogin.html";
+            }
+            else{
+                $("#nameplaceholder").html("<strong>Hare Krishna " + resData.name + "! 🙋‍♂️</strong>");
             }
         },
         error: (jqXhr, textStatus, errorThrown) => {

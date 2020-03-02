@@ -25,7 +25,7 @@ class PrasadamRestHandler extends SimpleRest {
 		if(strpos($requestContentType,'application/json') !== false){
 			$response = $this->encodeJson($result);
 			echo $response;
-		}		
+		}
 	}
 
 	function getAllPrasadam() {	
@@ -76,7 +76,7 @@ class PrasadamRestHandler extends SimpleRest {
 	public function addUser($data){
 		$result = new stdClass();
 
-		if(!$data || !$data->userName){
+		if(!$data || !$data->userName || !$data->name){
 			$statusCode = 400;
 			$result->error = INCOMPLETEDATA;
 		}
@@ -153,6 +153,7 @@ class PrasadamRestHandler extends SimpleRest {
 			$_SESSION[USERSESSNAME] = true;
 			$_SESSION[USERIDSESSNAME] = $isValid;
 			$result->output = $successValue;
+			$result->name = $_SESSION[NAMESESSION];
 		}
 		else{
 			$statusCode = 400;
@@ -183,8 +184,10 @@ class PrasadamRestHandler extends SimpleRest {
 	public function isUserLoggedIn(){
 		$resObject = new stdClass();
 
-		if($_SESSION[USERSESSNAME])
+		if($_SESSION[USERSESSNAME] && $_SESSION[USERIDSESSNAME] && $_SESSION[NAMESESSION]){
 			$resObject->isLoggedIn = true;
+			$resObject->name = $_SESSION[NAMESESSION];
+		}
 		else $resObject->isLoggedIn = false;
 
 		$resObject = json_encode($resObject);
@@ -273,6 +276,42 @@ class PrasadamRestHandler extends SimpleRest {
 		$this->setHttpHeaders($requestContentType, $statusCode);
 
 		echo json_encode($resObject);
+	}
+
+	public function getDevotees(){
+		$statusCode = 200;
+
+		$query = "SELECT id,username,name,created FROM users";
+
+		$db = new DBController();
+		$devotees = $db->executeSelectQuery($query);
+		
+		if(!$devotees)
+			$devotees = [];
+
+		$requestContentType = 'application/json';//$_POST['HTTP_ACCEPT'];
+		$this->setHttpHeaders($requestContentType, $statusCode);
+
+		echo json_encode($devotees);
+	}
+
+	public function deleteUser($userid = 0){
+		if($userid){
+			$statusCode = 200;
+
+			$query = "DELETE FROM users WHERE id = '".$userid."'";
+
+			$db = new DBController();
+			$devotees = $db->executeDeleteQuery($query);
+
+			if(!$devotees)
+				$statusCode = 500;
+
+			$requestContentType = 'application/json';//$_POST['HTTP_ACCEPT'];
+			$this->setHttpHeaders($requestContentType, $statusCode);
+
+			echo json_encode($devotees);
+		}
 	}
 }
 ?>

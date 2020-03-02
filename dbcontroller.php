@@ -43,5 +43,10 @@ class DBController {
 		if($query && mysqli_query($this->conn, $query)) return true;
 		else return false;
 	}
+
+	function executeDeleteQuery($query){
+		if($query && mysqli_query($this->conn, $query)) return true;
+		else return false;
+	}
 }
 ?>

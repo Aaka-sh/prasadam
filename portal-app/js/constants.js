@@ -11,3 +11,6 @@ const CANCELUSERPRASADAM = "cancelprasadam/";
 const GERUSERCANCELLATIONS = "getusercancellations/";
 const NOCANCELLATIONSFOUND = "No Cancellations Found.";
 const TIMINGS = ["Breakfast", "Lunch"];
+const RENDERTIMINGS = ["Brunch", "Dinner"];
+const GETDEVOTEES = "getdevotees/";
+const DELETEUSER = "deleteuser/";

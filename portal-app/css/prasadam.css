@@ -221,3 +221,15 @@ input[type="number"] {
     justify-content: flex-end;
     padding: 0 0.5rem;
 }
+
+/* User Table */
+
+.userrow .col-4{
+    padding: 0.75rem;
+}
+
+.fixedcontainer{
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 0.75rem;
+}

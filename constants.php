@@ -10,6 +10,7 @@
     const ADDEDUSER = "Successfully added user!";
     const ADMINSESSNAME = "adminloggedin";
     const USERSESSNAME = "userloggedin";
+    const NAMESESSION = "name";
     const USERIDSESSNAME = "userid";
     const ADMINVALID = "Admin Valid";
     const ADMININVALID = "Admin Invalid";
@@ -23,4 +24,5 @@
     const BREAKFAST = "breakfast";
     const LUNCH = "lunch";
     const CANCELLEDPRASADAM = "Successfully Cancelled Prasadam!";
+    const NOIDSENT = "No User ID Sent for Deletion.";
 ?>

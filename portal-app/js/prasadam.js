@@ -44,6 +44,10 @@ $(document).ready(function() {
                 $("#alerter").text(data.message);
                 $("#alerter").removeClass("alert alert-danger");
                 $("#alerter").addClass("alert alert-success");
+                
+                // Emptying inputs
+                $("#adderform .form-control").val("");
+                getDevotees();
 
                 setInterval(() => {
                     $("#alerter").text("");
@@ -93,7 +97,7 @@ $(document).ready(() => {
             $checkBoxCollection = $(`.${timing.toLowerCase()}-check`);
 
             for (let $cell of $checkBoxCollection) {
-                if (!$cell.checked) {
+                if (!$cell.checked && !$cell.classList.includes("cancelled")) {
                     $timingCancellations.push($cell.getAttribute("data-date"));
                 }
             }
@@ -152,7 +156,7 @@ $(document).ready(() => {
         ) {
             let date = cell.getAttribute("data-date");
 
-            TIMINGS.forEach(timing => {
+            TIMINGS.forEach((timing, index) => {
                 let isCancelled = isCancellationDate(
                     date,
                     cancellationDet,
@@ -160,11 +164,14 @@ $(document).ready(() => {
                 );
 
                 if (isCancelled)
-                    cellinnerHTML += "Cancelled for " + timing + "<br/>";
+                    cellinnerHTML += `<div class='checkcontainer'>
+                    <input type='checkbox' class='${timing.toLowerCase()}-check cancelled' data-date='${date}'></input>
+                    &nbsp;<label>${RENDERTIMINGS[index]}</label>
+                </div>`;
                 else
                     cellinnerHTML += `<div class='checkcontainer'>
                         <input type='checkbox' class='${timing.toLowerCase()}-check' checked="true" data-date='${date}'></input>
-                        &nbsp;<label>${timing}</label>
+                        &nbsp;<label>${RENDERTIMINGS[index]}</label>
                     </div>`;
 
                 // Removing the hindering skeleton.

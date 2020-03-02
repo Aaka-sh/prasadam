@@ -25,7 +25,11 @@
 
                 tableHTML += `
                     <tr>
-                        <th class='prasadtimecell'>${response.prasadamTime}</th>
+                        <th class='prasadtimecell'>${
+                            response.prasadamTime === "lunch"
+                                ? "Dinner"
+                                : "Brunch"
+                        }</th>
                         <td>${response.nPrasadam}</td>
                     </tr>
                 `;
@@ -48,7 +52,7 @@ function getPrasadamForDate(event) {
 
     let date = $("#selectedDate").val();
 
-    timings.forEach(cancellationTime => {
+    timings.forEach((cancellationTime, index) => {
         let postData = `cancellationTime=${cancellationTime.toLowerCase()}&cancellationDate=${date}`;
 
         let xhr = new XMLHttpRequest();
@@ -68,7 +72,11 @@ function getPrasadamForDate(event) {
 
                 tableHTML += `
                     <tr>
-                        <th class='prasadtimecell'>${response.prasadamTime}</th>
+                        <th class='prasadtimecell'>${
+                            response.prasadamTime === "lunch"
+                                ? "Dinner"
+                                : "Brunch"
+                        }</th>
                         <td>${response.nPrasadam}</td>
                     </tr>
                 `;
@@ -83,3 +91,67 @@ function getPrasadamForDate(event) {
     });
 }
 
+function deleteuser(userid = null) {
+    if (userid) {
+        const endpoint = BACKEND + DELETEUSER + "?userid=" + userid;
+
+        let xhr = new XMLHttpRequest();
+
+        xhr.open("DELETE", endpoint);
+
+        xhr.send();
+
+        xhr.onload = () => {
+            window.location.reload();
+        };
+    }
+}
+
+function getDevotees() {
+    const endpoint = BACKEND + GETDEVOTEES;
+    let xhr = new XMLHttpRequest();
+
+    xhr.open("GET", endpoint);
+
+    xhr.onload = () => {
+        let users = [], html = "";
+
+        try {
+            users = JSON.parse(xhr.responseText);
+        } catch (err) {
+            console.error(err);
+        }
+
+        if (users.length > 0) {
+            html = users.map(
+                user =>
+                    `<div class="row userrow">
+                <div class="col-4">${user.name}</div>
+                <div class="col-4">${user.username}</div>
+                <div class="col-4"><button class='btn btn-danger' onclick="deleteuser(${user.id})">Delete User</button></div>
+            </div>`
+            );
+
+            html = html
+                .toString()
+                .split(",")
+                .join("");
+
+            html =
+                `<div class='row userrow'>
+            <div class='col-4'><strong>Name</strong></div>
+            <div class='col-4'><strong>Email</strong></div>
+            <div class='col-4'><strong>Action</strong></div>
+        </div>` + html;
+        }
+        else{
+            html = "No Devotees Found.";
+        }
+
+        $("#devoteestable").html(html);
+    };
+
+    xhr.send();
+}
+
+$(document).ready(getDevotees);

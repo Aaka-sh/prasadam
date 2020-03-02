@@ -67,8 +67,16 @@
             <div id="alerter"></div>
             <h3>Add New Devotee?</h3>
             <form id="adderform">
-                Enter Your Mail-Id:
-
+                Enter Name of Devotee:
+                <input
+                    id="name"
+                    type="text"
+                    name="name"
+                    class="form-control"
+                    placeholder="Enter name of user"
+                    required
+                /><br />
+                Enter Mail Id:
                 <input
                     id="username"
                     type="email"
@@ -85,6 +93,12 @@
                     class="button"
                 />
             </form>
+        </fieldset>
+
+        <br />
+        <fieldset align="center" class="formcontainer">
+            <h3>Devotees</h3>
+            <div id="devoteestable"></div>
         </fieldset>
     </body>
 </html>
