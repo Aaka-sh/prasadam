@@ -233,3 +233,11 @@ input[type="number"] {
     margin: 0 auto;
     padding: 0 0.75rem;
 }
+
+.formrow{
+    align-items: center;
+}
+
+.formrow label{
+    margin: 0;
+}

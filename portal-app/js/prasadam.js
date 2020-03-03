@@ -44,7 +44,7 @@ $(document).ready(function() {
                 $("#alerter").text(data.message);
                 $("#alerter").removeClass("alert alert-danger");
                 $("#alerter").addClass("alert alert-success");
-                
+
                 // Emptying inputs
                 $("#adderform .form-control").val("");
                 getDevotees();
@@ -97,7 +97,7 @@ $(document).ready(() => {
             $checkBoxCollection = $(`.${timing.toLowerCase()}-check`);
 
             for (let $cell of $checkBoxCollection) {
-                if (!$cell.checked && !$cell.classList.includes("cancelled")) {
+                if (!$cell.checked) {
                     $timingCancellations.push($cell.getAttribute("data-date"));
                 }
             }
@@ -163,16 +163,21 @@ $(document).ready(() => {
                     timing.toLowerCase()
                 );
 
-                if (isCancelled)
+                if (isCancelled) {
                     cellinnerHTML += `<div class='checkcontainer'>
-                    <input type='checkbox' class='${timing.toLowerCase()}-check cancelled' data-date='${date}'></input>
-                    &nbsp;<label>${RENDERTIMINGS[index]}</label>
+                    Cancelled for ${
+                        ""
+                        // Uncomment the following to get an unchecked checkbox for the cancelled dates.
+                        //     <input type='checkbox' class='${timing.toLowerCase()}-check cancelled' data-date='${date}'></input>
+                        // &nbsp;
+                    }<label>${RENDERTIMINGS[index]}</label>
                 </div>`;
-                else
+                } else {
                     cellinnerHTML += `<div class='checkcontainer'>
                         <input type='checkbox' class='${timing.toLowerCase()}-check' checked="true" data-date='${date}'></input>
                         &nbsp;<label>${RENDERTIMINGS[index]}</label>
                     </div>`;
+                }
 
                 // Removing the hindering skeleton.
                 for (let tbody of $(".fc-content-skeleton tbody")) {

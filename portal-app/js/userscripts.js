@@ -11,9 +11,12 @@ function checkLoggedIn() {
             let resData = JSON.parse(data);
             if (jQxhr.status !== 200 || !resData.isLoggedIn || !resData.name) {
                 window.location = "userlogin.html";
-            }
-            else{
-                $("#nameplaceholder").html("<strong>Hare Krishna " + resData.name + "! 🙋‍♂️</strong>");
+            } else {
+                $("#nameplaceholder").html(
+                    "<strong>Hare Krishna " +
+                        resData.name.split(" ")[0] +
+                        "! 🙏</strong>"
+                );
             }
         },
         error: (jqXhr, textStatus, errorThrown) => {
@@ -49,7 +52,7 @@ $("#logoutbutton").click(logout);
 function getMonthCancellations(
     cancellationTime = TIMINGS[0],
     monthNum = new Date().getMonth() + 1,
-    callback = function(){}
+    callback = function() {}
 ) {
     const url =
         BACKEND +

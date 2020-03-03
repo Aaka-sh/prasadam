@@ -32,14 +32,18 @@
             </nav>
         </div>
         <fieldset class="formcontainer">
-            <h3>Prasadam Count</h3>
+            <h3>Prasadam Count</h3><br />
 
-            Select Date :<input
-                type="date"
-                name="date"
-                id="selectedDate"
-                class="form-control"
-            />
+            <div class="row formrow">
+                <div class="col-sm-2">Select Date :</div>
+                <div class="col-sm-10">
+                <input
+                    type="date"
+                    name="date"
+                    id="selectedDate"
+                    class="form-control"
+                /></div>
+            </div>
             <br />
             <input
                 type="submit"
@@ -65,26 +69,40 @@
 
         <fieldset align="center" class="formcontainer">
             <div id="alerter"></div>
-            <h3>Add New Devotee?</h3>
+            <h3>Add New Devotee?</h3><br />
             <form id="adderform">
-                Enter Name of Devotee:
-                <input
-                    id="name"
-                    type="text"
-                    name="name"
-                    class="form-control"
-                    placeholder="Enter name of user"
-                    required
-                /><br />
-                Enter Mail Id:
-                <input
-                    id="username"
-                    type="email"
-                    name="userName"
-                    class="form-control"
-                    placeholder="Email Address for user"
-                    required
-                /><br />
+                <div class="row formrow">
+                    <div class="col-sm-3">
+                        <label for="email">Enter Name of Devotee:</label>
+                    </div>
+                    <div class="col-sm-9">
+                    <input
+                        id="name"
+                        type="text"
+                        name="name"
+                        class="form-control"
+                        placeholder="Enter name of user"
+                        required
+                    />
+                    </div>
+                </div>
+                <br />
+                <div class="row formrow">
+                    <div class="col-sm-3">
+                        <label for="email">Enter Email Id:</label>
+                    </div>
+                    <div class="col-sm-9">
+                    <input
+                        id="username"
+                        type="email"
+                        name="userName"
+                        class="form-control"
+                        placeholder="Email Address for user"
+                        required
+                    />
+                    </div>
+                </div>
+                <br />
                 <input
                     type="submit"
                     class="btn btn-primary"

@@ -1,4 +1,4 @@
-(function getTodaysPrasadam() {
+function getTodaysPrasadam() {
     const endpoint = BACKEND + GETNPRASADAM;
 
     let timings = TIMINGS;
@@ -41,6 +41,61 @@
         };
 
         xhr.send(postData);
+    });
+}
+
+(function getWeeksPrasadam() {
+    const endpoint = BACKEND + GETNPRASADAM;
+
+    Date.prototype.yyyymmdd = function() {
+        var mm = this.getMonth() + 1; // getMonth() is zero-based
+        var dd = this.getDate();
+
+        return [
+            this.getFullYear(),
+            (mm > 9 ? "" : "0") + mm,
+            (dd > 9 ? "" : "0") + dd
+        ].join("-");
+    };
+
+    let weekDays = [];
+    let tableHTML = $("#prasadcount").html();
+
+    for (let day = 0; day < 7; day++)
+        weekDays.push(
+            new Date(new Date().setDate(new Date().getDate() + day)).yyyymmdd()
+        );
+
+    TIMINGS.map(cancellationTime => {
+        let timingCancellations = 0;
+        for (let day of weekDays) {
+            let postData = `cancellationTime=${cancellationTime.toLowerCase()}&cancellationDate=${day}`;
+
+            let xhr = new XMLHttpRequest();
+            xhr.open("POST", endpoint, false); // Synchronous process.
+
+            xhr.setRequestHeader(
+                "Content-Type",
+                "application/x-www-form-urlencoded"
+            );
+
+            xhr.onload = () => {
+                let response = JSON.parse(xhr.responseText);
+                timingCancellations += response.nPrasadam;
+            };
+            xhr.send(postData);
+        }
+        
+        tableHTML += `<tr>
+            <th class='prasadtimecell'>${
+                cancellationTime.toLowerCase() === "lunch"
+                    ? "Dinner (This Week)"
+                    : "Brunch (This Week)"
+            }</th>
+            <td>${timingCancellations}</td>
+        </tr>`;
+
+        $("#prasadcount").html(tableHTML);
     });
 })();
 
@@ -114,7 +169,8 @@ function getDevotees() {
     xhr.open("GET", endpoint);
 
     xhr.onload = () => {
-        let users = [], html = "";
+        let users = [],
+            html = "";
 
         try {
             users = JSON.parse(xhr.responseText);
@@ -143,8 +199,7 @@ function getDevotees() {
             <div class='col-4'><strong>Email</strong></div>
             <div class='col-4'><strong>Action</strong></div>
         </div>` + html;
-        }
-        else{
+        } else {
             html = "No Devotees Found.";
         }
 

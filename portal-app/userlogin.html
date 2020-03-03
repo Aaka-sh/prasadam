@@ -26,17 +26,21 @@
                 <form id="userloginform">
                     <div id="errormessage"></div>
                     <br />
-                    <label class="col-sm-2" for="email"
-                            >Email:</label
-                    >
-                    <input
-                        type="email"
-                        name="userName"
-                        id="userName"
-                        placeholder="Enter your email/username."
-                        class="form-control"
-                        required
-                    />
+                    <div class="row formrow">
+                        <div class="col-sm-1">
+                            <label for="email">Email:</label>
+                        </div>
+                        <div class="col-sm-11">
+                            <input
+                                type="email"
+                                name="userName"
+                                id="userName"
+                                placeholder="Enter your email/username."
+                                class="form-control"
+                                required
+                            />
+                        </div>
+                    </div>
                     <br />
                     <button type="submit" class="btn btn-primary">Login</button>
                 </form>
