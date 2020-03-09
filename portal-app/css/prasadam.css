@@ -241,3 +241,21 @@ input[type="number"] {
 .formrow label{
     margin: 0;
 }
+
+.calendarcontainer{
+    overflow: auto;
+}
+
+@media only screen and (max-width: 600px){
+    .checkwrapper{
+        flex-flow: row;
+        align-items: flex-end;
+        justify-content: flex-start;
+        vertical-align: bottom;
+        padding-top: 1.5rem;
+    }
+}
+
+.tablecontainer{
+    overflow: auto;
+}

@@ -164,19 +164,25 @@ $(document).ready(() => {
                 );
 
                 if (isCancelled) {
-                    cellinnerHTML += `<div class='checkcontainer'>
-                    Cancelled for ${
-                        ""
-                        // Uncomment the following to get an unchecked checkbox for the cancelled dates.
-                        //     <input type='checkbox' class='${timing.toLowerCase()}-check cancelled' data-date='${date}'></input>
-                        // &nbsp;
-                    }<label>${RENDERTIMINGS[index]}</label>
-                </div>`;
+                    if (screen.width > 600 || window.innerWidth > 600) {
+                        cellinnerHTML += `<div class='checkcontainer'>
+                            Cancelled for ${
+                                ""
+                                // Uncomment the following to get an unchecked checkbox for the cancelled dates.
+                                //     <input type='checkbox' class='${timing.toLowerCase()}-check cancelled' data-date='${date}'></input>
+                                // &nbsp;
+                            }<label>${RENDERTIMINGS[index]}</label>
+                        </div>`;
+                    }
                 } else {
-                    cellinnerHTML += `<div class='checkcontainer'>
+                    cellinnerHTML += `<span class='checkcontainer'>
                         <input type='checkbox' class='${timing.toLowerCase()}-check' checked="true" data-date='${date}'></input>
-                        &nbsp;<label>${RENDERTIMINGS[index]}</label>
-                    </div>`;
+                        &nbsp;<label>${
+                            screen.width > 600 || window.innerWidth > 600
+                                ? RENDERTIMINGS[index]
+                                : SMALLERTIMINGS[index]
+                        }</label>
+                    </span>`;
                 }
 
                 // Removing the hindering skeleton.
