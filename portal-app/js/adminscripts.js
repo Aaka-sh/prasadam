@@ -66,37 +66,49 @@ function getTodaysPrasadam() {
             new Date(new Date().setDate(new Date().getDate() + day)).yyyymmdd()
         );
 
-    TIMINGS.map(cancellationTime => {
-        let timingCancellations = 0;
-        for (let day of weekDays) {
+    for (let day of weekDays) {
+        TIMINGS.map(cancellationTime => {
+            let days = [
+                "Sunday",
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Saturday"
+            ];
             let postData = `cancellationTime=${cancellationTime.toLowerCase()}&cancellationDate=${day}`;
-
+    
             let xhr = new XMLHttpRequest();
             xhr.open("POST", endpoint, false); // Synchronous process.
-
+    
             xhr.setRequestHeader(
                 "Content-Type",
                 "application/x-www-form-urlencoded"
             );
-
+    
             xhr.onload = () => {
                 let response = JSON.parse(xhr.responseText);
-                timingCancellations += response.nPrasadam;
+                tableHTML += `<tr><th class='prasadtimecell'>${
+                    cancellationTime.toLowerCase() === "lunch" ? "Dinner" : "Brunch"
+                } (${day} - ${days[new Date(day).getDay()]})</th><td>${
+                    response.nPrasadam
+                }</td>`;
             };
             xhr.send(postData);
-        }
-        
-        tableHTML += `<tr>
-            <th class='prasadtimecell'>${
-                cancellationTime.toLowerCase() === "lunch"
-                    ? "Dinner (This Week)"
-                    : "Brunch (This Week)"
-            }</th>
-            <td>${timingCancellations}</td>
-        </tr>`;
-
-        $("#prasadcount").html(tableHTML);
-    });
+    
+            // tableHTML += `<tr>
+            //     <th class='prasadtimecell'>${
+            //         cancellationTime.toLowerCase() === "lunch"
+            //             ? "Dinner (This Week)"
+            //             : "Brunch (This Week)"
+            //     }</th>
+            //     <td>${timingCancellations}</td>
+            // </tr>`;
+    
+            $("#prasadcount").html(tableHTML);
+        });
+    }
 })();
 
 function getPrasadamForDate(event) {

@@ -6,5 +6,5 @@
         echo "<br>Password : ".$hashedPass;
     }
 
-    echo generateAdmin("admin@gmail.com", "abcdefgh");
+    echo generateAdmin("admin@gmail.com", "12345678");
 ?>

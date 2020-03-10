@@ -16,7 +16,7 @@ function processForm(e) {
             }
         },
         error: function(jqXhr, textStatus, errorThrown) {
-            console.error(errorThrown);
+            window.alert("Invalid Username Password Combination.");
         }
     });
 
